@@ -10,3 +10,4 @@ metals.sbt
 coursier
 .bsp
 .vscode
+.crc
