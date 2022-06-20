@@ -10,3 +10,5 @@ coursier
 .bsp
 .vscode
 .crc
+
+*.DS_Store
