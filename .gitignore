@@ -9,6 +9,6 @@ metals.sbt
 coursier
 .bsp
 .vscode
-.crc
+*.crc
 
 *.DS_Store
