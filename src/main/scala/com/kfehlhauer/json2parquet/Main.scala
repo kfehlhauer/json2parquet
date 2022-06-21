@@ -44,14 +44,14 @@ object Main extends zio.ZIOAppDefault:
 
   def program =
     for
-      vehicleJson         <- getData
-      _                   <- ZIO.attempt(vehicleJson.foreach(println))  // Display the raw JSON
-      vehicles            <- ZIO.foreach(vehicleJson)(decodeJson)
-      _                   <- saveAsParquet(vehicles) // Save to Parquet
-      wd                  <- ZIO.attempt(java.lang.System.getProperty("user.dir"))
+      vehicleJson <- getData
+      _ <- ZIO.attempt(vehicleJson.foreach(println)) // Display the raw JSON
+      vehicles <- ZIO.foreach(vehicleJson)(decodeJson)
+      _ <- saveAsParquet(vehicles) // Save to Parquet
+      wd <- ZIO.attempt(java.lang.System.getProperty("user.dir"))
       vehiclesFromParquet <- readParquet(Path(s"${wd}/vehicles.parquet")) // Read back the data we just saved
-      _                   <- ZIO.attempt(vehiclesFromParquet.foreach(println)) // Display the decoded Parquet
-      _                   <- cleanUp
+      _ <- ZIO.attempt(vehiclesFromParquet.foreach(println))              // Display the decoded Parquet
+      _ <- cleanUp
     yield ()
 
   def run = program

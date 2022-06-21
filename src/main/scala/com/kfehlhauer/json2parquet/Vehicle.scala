@@ -11,5 +11,5 @@ final case class Vehicle(
 )
 
 object Vehicle {
-    implicit val decoder: JsonDecoder[Vehicle] = DeriveJsonDecoder.gen[Vehicle]
+  implicit val decoder: JsonDecoder[Vehicle] = DeriveJsonDecoder.gen[Vehicle]
 }
