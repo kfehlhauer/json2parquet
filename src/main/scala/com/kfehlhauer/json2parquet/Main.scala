@@ -1,13 +1,13 @@
 package com.kfehlhauer.json2parquet
-import zio.*
-import zio.json.*
+import zio._
+import zio.json._
 import zio.Console._
 import java.io.File
 import com.github.mjakubowski84.parquet4s.{ParquetReader, ParquetWriter, Path}
 import org.apache.parquet.hadoop.metadata.CompressionCodecName
 import org.apache.hadoop.conf.Configuration
 
-object Main extends zio.ZIOAppDefault:
+object Main extends ZIOAppDefault:
   val getData =
     ZIO.acquireReleaseWith(ZIO.attemptBlocking(io.Source.fromFile("src/main/resources/vehicles.json")))(file =>
       ZIO.attempt(file.close()).orDie
@@ -44,14 +44,14 @@ object Main extends zio.ZIOAppDefault:
 
   def program =
     for
-      vehicleJson         <- getData
-      _                   <- ZIO.attempt(vehicleJson.foreach(println)) // Display the raw JSON
-      vehicles            <- ZIO.foreach(vehicleJson)(decodeJson)
-      _                   <- saveAsParquet(vehicles) // Save to Parquet
-      wd                  <- ZIO.attempt(java.lang.System.getProperty("user.dir"))
+      vehicleJson <- getData
+      _ <- ZIO.attempt(vehicleJson.foreach(println)) // Display the raw JSON
+      vehicles <- ZIO.foreach(vehicleJson)(decodeJson)
+      _ <- saveAsParquet(vehicles) // Save to Parquet
+      wd <- ZIO.attempt(java.lang.System.getProperty("user.dir"))
       vehiclesFromParquet <- readParquet(Path(s"${wd}/vehicles.parquet")) // Read back the data we just saved
-      _                   <- ZIO.attempt(vehiclesFromParquet.foreach(println))              // Display the decoded Parquet
-      _                   <- cleanUp
+      _ <- ZIO.attempt(vehiclesFromParquet.foreach(println))              // Display the decoded Parquet
+      _ <- cleanUp
     yield ()
 
   def run = program
